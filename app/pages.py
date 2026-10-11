@@ -2,6 +2,7 @@ from dataclasses import dataclass
 
 from flask import (
     Blueprint,
+    Response,
     current_app,
     flash,
     redirect,
@@ -11,7 +12,7 @@ from flask import (
 )
 from sqlalchemy.exc import SQLAlchemyError
 
-from app import cv_requests
+from app import cv_requests, rate_limit
 from app.extension import db
 from app.forms import CVRequestForm
 from app.models import CVRequest, PortfolioEntry
@@ -117,7 +118,7 @@ def cv():
             # Bots get the same response as people, but nothing is stored.
             return redirect(url_for("pages.cv_requested"))
 
-        fingerprint = cv_requests.client_hash()
+        fingerprint = rate_limit.client_hash()
         if cv_requests.rate_limited(fingerprint):
             flash("Too many requests. Please try again in an hour.", "error")
             return render_template("pages/cv.html", form=form, site_key=site_key), 429
@@ -161,6 +162,33 @@ def cv_requested():
 @pages.get("/contact")
 def contact():
     return render_template("pages/contact.html")
+
+
+@pages.get("/robots.txt")
+def robots():
+    site = current_app.config["SITE_URL"]
+    body = f"User-agent: *\nDisallow: /admin\n\nSitemap: {site}/sitemap.xml\n"
+    return Response(body, mimetype="text/plain")
+
+
+@pages.get("/sitemap.xml")
+def sitemap():
+    site = current_app.config["SITE_URL"]
+    urls = "".join(
+        f"  <url><loc>{site}{url_for(f'pages.{page.endpoint}')}</loc></url>\n"
+        for page in PAGES
+    )
+    body = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        f"{urls}</urlset>\n"
+    )
+    return Response(body, mimetype="application/xml")
+
+
+@pages.get("/healthz")
+def healthz():
+    return {"status": "ok"}
 
 
 @pages.get("/favicon.ico")
