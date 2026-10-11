@@ -61,3 +61,21 @@ class CVRequest(db.Model):
     client_hash: Mapped[str] = mapped_column(String(64), nullable=False, index=True)
     notified: Mapped[bool] = mapped_column(default=False, nullable=False)
     handled: Mapped[bool] = mapped_column(default=False, nullable=False)
+
+
+class RateLimitEvent(db.Model):
+    __tablename__ = "rate_limit_events"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    kind: Mapped[str] = mapped_column(String(40), nullable=False)
+    client_hash: Mapped[str] = mapped_column(String(64), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        default=lambda: datetime.now(UTC),
+        nullable=False,
+        index=True,
+    )
+
+    __table_args__ = (
+        db.Index("ix_rate_limit_events_kind_client", "kind", "client_hash"),
+    )

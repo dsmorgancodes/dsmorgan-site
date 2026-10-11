@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from flask import Blueprint, current_app, flash, redirect, render_template, url_for
 from flask_login import (
     current_user,
@@ -7,6 +9,7 @@ from flask_login import (
 )
 from sqlalchemy.exc import SQLAlchemyError
 
+from app import rate_limit
 from app.extension import db
 from app.forms import CV_REQUEST_REASONS, CSRFOnlyForm, DeleteForm, EntryForm, LoginForm
 from app.models import AdminUser, CVRequest, PortfolioEntry
@@ -22,14 +25,25 @@ def login():
     form = LoginForm()
 
     if form.validate_on_submit():
+        fingerprint = rate_limit.client_hash()
+        window = timedelta(
+            minutes=int(current_app.config["LOGIN_FAILURE_WINDOW_MINUTES"])
+        )
+        failures = rate_limit.recent_events("login_failure", fingerprint, window)
+        if failures >= int(current_app.config["LOGIN_FAILURE_LIMIT"]):
+            flash("Too many failed sign-in attempts. Try again later.", "error")
+            return render_template("admin/login.html", form=form), 429
+
         user = db.session.execute(
             db.select(AdminUser).where(AdminUser.username == form.username.data)
         ).scalar_one_or_none()
 
         if user is not None and user.check_password(form.password.data):
+            rate_limit.clear_events("login_failure", fingerprint)
             login_user(user)
             return redirect(url_for("admin.dashboard"))
 
+        rate_limit.record_event("login_failure", fingerprint)
         flash("Incorrect username or password.", "error")
 
     return render_template("admin/login.html", form=form)

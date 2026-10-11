@@ -12,6 +12,8 @@ def app():
             "TESTING": True,
             "SECRET_KEY": "test-only-session-key",
             "SQLALCHEMY_DATABASE_URI": "sqlite://",
+            "SESSION_COOKIE_SECURE": False,
+            "PREFERRED_URL_SCHEME": "http",
         }
     )
     with app.app_context():

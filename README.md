@@ -81,12 +81,47 @@ Delete opens a confirmation page. Its POST action removes only the catalog
 record, never the linked document or source repository. Logout and all changes
 require a CSRF token.
 
+## Production
+
+The app runs under gunicorn in a container (`Dockerfile`, `wsgi.py`,
+`gunicorn.conf.py`) and listens on `$PORT` (default 8080), as Google Cloud Run
+expects. Test the image locally:
+
+```sh
+docker build -t dsmorgan-site .
+docker run --rm -p 8080:8080 --env-file .env dsmorgan-site
+```
+
+Required environment: `FLASK_SECRET_KEY` and `DATABASE_URL`. The app refuses to
+start without them. Also set `FLASK_RESEND_API_KEY`, `FLASK_CV_REQUEST_FROM`,
+`FLASK_CV_REQUEST_TO`, and the real `FLASK_TURNSTILE_SITE_KEY` /
+`FLASK_TURNSTILE_SECRET_KEY` (Turnstile keys only work on their configured
+hostnames). Optional: `WEB_CONCURRENCY` and `GUNICORN_THREADS` (defaults 1 and 8),
+`FLASK_PROXY_HOPS` (default 1, for Cloud Run's front end), and
+`FLASK_TRUST_CF_CONNECTING_IP` (only when traffic is proxied through Cloudflare).
+
+Run migrations from a trusted machine against Neon before deploying code that
+needs them: `uv run flask --app app db upgrade`. The container never migrates.
+
+Hardening built in:
+
+- Secure, HttpOnly, SameSite cookies outside debug mode; HTTPS URLs.
+- Content Security Policy and related security headers; HSTS over HTTPS only.
+- Admin pages are never cached; static files get a `?v=` content hash and a
+  one-year cache.
+- Admin login locks out an address after 5 failures in 15 minutes.
+- `/healthz`, `/robots.txt`, and `/sitemap.xml` (built from the page registry).
+
 ## Checks
 
 ```sh
 uv run python -m pytest
 uv run ruff check app tests
+uv run ruff format --check app tests
 ```
+
+GitHub Actions runs these checks and a Docker build on every push to `main`
+and on pull requests.
 
 Tests use an isolated in-memory SQLite database, not Neon. Model changes
 still require reviewed Alembic migrations; this editor adds no schema changes.

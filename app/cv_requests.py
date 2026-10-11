@@ -1,32 +1,19 @@
-import hashlib
 import json
 from datetime import UTC, datetime, timedelta
 from urllib.error import URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
-from flask import current_app, request
+from flask import current_app
 
 from app.extension import db
 from app.forms import CV_REQUEST_REASONS
 from app.models import CVRequest
+from app.rate_limit import client_ip
 
 TURNSTILE_VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify"
 RESEND_URL = "https://api.resend.com/emails"
 USER_AGENT = "dsmorgan-site/1.0"
-
-
-def client_ip():
-    if current_app.config.get("TRUST_CF_CONNECTING_IP"):
-        forwarded = request.headers.get("CF-Connecting-IP")
-        if forwarded:
-            return forwarded
-    return request.remote_addr or "unknown"
-
-
-def client_hash():
-    secret = current_app.config["SECRET_KEY"]
-    return hashlib.sha256(f"{secret}:{client_ip()}".encode()).hexdigest()
 
 
 def rate_limited(fingerprint):

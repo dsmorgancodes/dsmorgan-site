@@ -170,7 +170,7 @@ def test_index_lists_contents_and_assets(client):
     assert 'href="#main-content"' in html
     assert 'class="ribbon" href="/"' in html
     assert 'rel="canonical" href="https://dsmorgan.com/"' in html
-    assert 'rel="icon" href="/static/favicon.svg"' in html
+    assert 'rel="icon" href="/static/favicon.svg?v=' in html
     assert "/admin" not in html
     for sheet in ("tokens", "base", "components", "pages"):
         assert f"/static/css/{sheet}.css" in html
