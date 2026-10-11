@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% from "macros.html" import page_head %}
+{% block title %}Request Received | Drew M. Schaffner{% endblock %}
+{% block running_head %}Curriculum Vitae{% endblock %}
+{% block content %}
+  <section aria-labelledby="page-heading">
+    {{ page_head("Thank you.") }}
+    <p class="prose">Your request has been received. I review each request personally
+      and will reply by email.</p>
+    <p class="prose"><a href="{{ url_for('pages.cv') }}">Return to the Curriculum Vitae</a></p>
+  </section>
+{% endblock %}

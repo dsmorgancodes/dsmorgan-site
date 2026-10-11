@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+  <section class="title-page" aria-labelledby="page-heading">
+    <p class="kicker">Mathematics &amp; Data Science</p>
+    <h1 id="page-heading">Drew M. Schaffner</h1>
+    <div class="title-rule" aria-hidden="true"></div>
+    <p class="credentials">Master of Science in Mathematics</p>
+    <p class="institution">Northwest Missouri State University</p>
+    <blockquote class="epigraph">
+      <p>&ldquo;No human investigation can be called real science if it cannot
+        be demonstrated mathematically.&rdquo;</p>
+      <cite>Leonardo da Vinci</cite>
+    </blockquote>
+  </section>
+
+  <div class="ornament" aria-hidden="true"></div>
+
+  <nav class="contents" aria-labelledby="contents-heading">
+    <h2 id="contents-heading">Contents</h2>
+    <ol>
+      {% for page in book_pages if page.endpoint != "index" %}
+        <li><a href="{{ url_for('pages.' ~ page.endpoint) }}"><span class="toc-title">{{ page.title }}</span><span class="toc-numeral">{{ loop.index }}</span></a></li>
+      {% endfor %}
+    </ol>
+  </nav>
+{% endblock %}

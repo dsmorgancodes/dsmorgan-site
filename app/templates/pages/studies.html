@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% from "macros.html" import page_head %}
+{% set disciplines = [
+  ("Artificial Intelligence", "Machine learning, neural networks, and natural language processing. Exploring how models learn from data, how their predictions are evaluated, and the mathematics behind intelligent systems."),
+  ("Group Theory", "Groups, symmetries, and the structures that describe transformations. Studying how abstract patterns connect geometry, algebra, and computation, with an interest in symmetry-aware approaches to machine learning."),
+  ("Data Science", "Statistical inference, exploratory analysis, and predictive modeling. Turning raw data into reproducible analyses, testing assumptions, and communicating findings that support informed decisions."),
+  ("Linear Algebra", "Vector spaces, matrix decompositions, eigenvalues, and linear transformations. The foundation for understanding embeddings, dimensionality reduction, and the computations at the heart of modern AI and data science."),
+  ("Real Analysis", "Limits, continuity, convergence, and the rigorous foundations of calculus. Studying how precise definitions and proofs explain the behavior of functions, sequences, and the methods used in mathematical modeling."),
+  ("Graph Theory", "Networks, connectivity, paths, and combinatorial structures. Exploring how relationships can be modeled and analyzed, from algorithmic problems to network data and graph-based machine learning."),
+  ("Topology", "Continuity, connectedness, compactness, and the structure of spaces. Investigating properties preserved under continuous transformations, with an interest in how shape and structure inform the analysis of data."),
+] %}
+{% block content %}
+  <section aria-labelledby="page-heading">
+    {{ page_head("Areas of Study") }}
+    <p class="prose drop-cap">My graduate disciplines sit where pure mathematics meets modern
+      computation: the structures of algebra and analysis, and the methods that turn
+      data into understanding.</p>
+    <dl class="glossary">
+      {% for name, text in disciplines %}
+        <div>
+          <dt>{{ name }}</dt>
+          <dd>{{ text }}</dd>
+        </div>
+      {% endfor %}
+    </dl>
+  </section>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}{{ "Edit" if entry else "Add" }} Entry | D.S. Morgan{% endblock %}
+{% block running_head %}Librarian&rsquo;s Desk{% endblock %}
+{% block main_class %}admin-page{% endblock %}
+{% block content %}
+  <p><a href="{{ url_for('admin.dashboard') }}">Back to catalog</a></p>
+  <h1>{{ "Edit" if entry else "Add" }} Entry</h1>
+  <form method="post" class="editor-form">
+    {{ form.hidden_tag() }}
+    {% for field in [form.title, form.entry_type, form.written_date, form.link, form.version_control_url, form.summary] %}
+      <div class="form-field">
+        {{ field.label }}
+        {{ field(aria_invalid="true" if field.errors else "false") }}
+        {% for error in field.errors %}
+          <p class="field-error" role="alert">{{ error }}</p>
+        {% endfor %}
+      </div>
+    {% endfor %}
+    <p class="help-text">Written date describes the original work, not this catalog entry.
+      Leave it blank if the exact date is unknown.</p>
+    <p class="help-text">Version Control links to the repository containing the code.</p>
+    <p class="help-text">Summary is a one- or two-sentence abstract shown on the catalog card (600 characters max).</p>
+    <p>{{ form.published() }} {{ form.published.label }}</p>
+    <p class="help-text">Unpublished entries remain drafts and are hidden from the homepage.</p>
+    <p>{{ form.submit() }}</p>
+  </form>
+{% endblock %}

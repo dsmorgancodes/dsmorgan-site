@@ -1,0 +1,72 @@
+{%- set page_title = current_page.title if current_page and current_page.endpoint != "index" else None -%}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#2d2119">
+    <title>{% block title %}{% if page_title %}{{ page_title }} | {% endif %}Drew M. Schaffner{% endblock %}</title>
+    {%- set description = current_page.description if current_page else "Drew M. Schaffner, M.S. Mathematics." %}
+    <meta name="description" content="{% block description %}{{ description }}{% endblock %}">
+    {% if current_page %}
+      {%- set canonical = config.SITE_URL ~ url_for("pages." ~ current_page.endpoint) %}
+      <link rel="canonical" href="{{ canonical }}">
+      <meta property="og:type" content="website">
+      <meta property="og:site_name" content="Drew M. Schaffner">
+      <meta property="og:title" content="{{ page_title or 'Drew M. Schaffner' }}">
+      <meta property="og:description" content="{{ description }}">
+      <meta property="og:url" content="{{ canonical }}">
+      <meta name="twitter:card" content="summary">
+    {% else %}
+      <meta name="robots" content="noindex">
+    {% endif %}
+    <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}" type="image/svg+xml">
+    <link rel="preload" href="{{ url_for('static', filename='fonts/eb-garamond-latin.woff2') }}" as="font" type="font/woff2" crossorigin>
+    {% for sheet in ("tokens", "base", "components", "pages") %}
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/' ~ sheet ~ '.css') }}">
+    {% endfor %}
+    {% block head %}{% endblock %}
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <div class="page">
+      <a class="ribbon" href="{{ url_for('pages.index') }}" aria-label="Return to the index">Index</a>
+      <header class="running-head">
+        <a href="{{ url_for('pages.index') }}">D.S. Morgan</a>
+        <span>{% block running_head %}{{ page_title or "Mathematics & Data Science" }}{% endblock %}</span>
+      </header>
+
+      <main id="main-content" class="{% block main_class %}{% endblock %}">
+        {% for category, message in get_flashed_messages(with_categories=true) %}
+          <p class="notice notice-{{ category }}" role="status">{{ message }}</p>
+        {% endfor %}
+        {% block content %}{% endblock %}
+      </main>
+
+      {% if previous_page or next_page %}
+        <nav class="page-turn" aria-label="Turn the page">
+          {% if previous_page %}
+            <a rel="prev" href="{{ url_for('pages.' ~ previous_page.endpoint) }}"><span aria-hidden="true">&larr;</span> {{ previous_page.title }}</a>
+          {% else %}<span></span>{% endif %}
+          {% if next_page %}
+            <a rel="next" href="{{ url_for('pages.' ~ next_page.endpoint) }}">{{ next_page.title }} <span aria-hidden="true">&rarr;</span></a>
+          {% endif %}
+        </nav>
+      {% endif %}
+
+      <footer class="colophon">
+        {% if folio is not none %}
+          <p class="folio"><span class="visually-hidden">Page </span>{{ "i" if folio == 0 else folio }}</p>
+        {% endif %}
+        <nav aria-label="Pages">
+          <ul class="page-list">
+            {% for page in book_pages %}
+              <li><a href="{{ url_for('pages.' ~ page.endpoint) }}"{% if current_page == page %} aria-current="page"{% endif %}>{{ page.title }}</a></li>
+            {% endfor %}
+          </ul>
+        </nav>
+        <p>D.S. Morgan &middot; M.S. Mathematics &middot; <em>Set in EB Garamond</em></p>
+      </footer>
+    </div>
+  </body>
+</html>

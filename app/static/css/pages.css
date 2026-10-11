@@ -1,0 +1,88 @@
+/* Page-specific layout: title page, pages, admin. */
+
+.title-page {
+  padding-block: var(--space-l) var(--space-m);
+  text-align: center;
+}
+
+.title-page .kicker {
+  margin-bottom: var(--space-m);
+  color: var(--accent);
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.22em;
+}
+
+.title-page h1 {
+  margin-bottom: var(--space-m);
+  letter-spacing: -0.01em;
+}
+
+.title-rule {
+  width: 6rem;
+  margin: var(--space-m) auto;
+  border-top: 1px solid var(--accent);
+}
+
+.title-page .credentials {
+  margin-bottom: 0;
+  font-size: var(--step-1);
+}
+
+.title-page .institution {
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+.missing {
+  max-width: var(--measure);
+  margin-inline: auto;
+  text-align: center;
+}
+
+.contact .address {
+  margin-bottom: var(--space-m);
+  font-size: var(--step-2);
+  font-style: italic;
+  text-align: center;
+}
+
+.admin-page h1 {
+  margin-bottom: var(--space-m);
+  font-size: var(--step-3);
+}
+
+.admin-page h2 {
+  margin-block: var(--space-l) var(--space-s);
+  font-size: var(--step-2);
+}
+
+.admin-entry {
+  padding-block: var(--space-s);
+  border-top: 1px solid var(--rule);
+}
+
+.admin-entry h3 {
+  margin-bottom: var(--space-2xs);
+}
+
+.admin-entry p {
+  margin-bottom: var(--space-2xs);
+}
+
+@media (min-width: 48rem) {
+  .ledger {
+    display: grid;
+    grid-template-columns: 10rem 1fr;
+    gap: var(--space-m);
+  }
+
+  .ledger-heading {
+    border-bottom: 0;
+    text-align: right;
+  }
+
+  .ledger-heading,
+  .ledger-entry:first-of-type {
+    padding-top: var(--space-xs);
+  }
+}

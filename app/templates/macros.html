@@ -1,0 +1,6 @@
+{% macro page_head(title, intro=None, heading_id="page-heading") %}
+  <header class="page-head">
+    <h1 id="{{ heading_id }}">{{ title }}</h1>
+    {% if intro %}<p>{{ intro }}</p>{% endif %}
+  </header>
+{% endmacro %}

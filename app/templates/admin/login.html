@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Admin Login | D.S. Morgan{% endblock %}
+{% block running_head %}Librarian&rsquo;s Desk{% endblock %}
+{% block main_class %}admin-page{% endblock %}
+{% block content %}
+  <h1>Admin Login</h1>
+
+  <form method="post" action="{{ url_for('admin.login') }}" class="login-form">
+    {{ form.hidden_tag() }}
+    {% for errors in form.errors.values() %}
+      {% for error in errors %}
+        <p class="field-error" role="alert">{{ error }}</p>
+      {% endfor %}
+    {% endfor %}
+
+    <div class="form-field">
+      {{ form.username.label }}
+      {{ form.username(autocomplete="username") }}
+    </div>
+    <div class="form-field">
+      {{ form.password.label }}
+      {{ form.password(autocomplete="current-password") }}
+    </div>
+
+    <p>{{ form.submit() }}</p>
+  </form>
+{% endblock %}

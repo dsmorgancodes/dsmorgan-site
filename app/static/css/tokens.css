@@ -1,0 +1,59 @@
+/*
+  Design tokens: the single place to retheme the site.
+  Change colors, type, and spacing here; other files only reference these.
+*/
+
+@font-face {
+  font-family: "EB Garamond";
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("../fonts/eb-garamond-latin.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "EB Garamond";
+  font-style: italic;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("../fonts/eb-garamond-italic-latin.woff2") format("woff2");
+}
+
+:root {
+  /* Reading room palette */
+  --desk: hsl(22, 32%, 13%);
+  --desk-grain: hsl(22, 30%, 18%);
+  --paper: hsl(42, 48%, 94%);
+  --paper-shade: hsl(38, 38%, 88%);
+  --ink: hsl(24, 28%, 13%);
+  --ink-soft: hsl(24, 14%, 36%);
+  --rule: hsl(34, 26%, 76%);
+  --accent: hsl(350, 62%, 26%);
+  --accent-bright: hsl(350, 58%, 34%);
+  --accent-ink: hsl(42, 60%, 94%);
+  --danger: hsl(5, 55%, 35%);
+
+  /* Typography */
+  --font-book: "EB Garamond", Garamond, "Times New Roman", Georgia, serif;
+  --step--1: 0.875rem;
+  --step-0: clamp(1.125rem, 1.05rem + 0.35vw, 1.3rem);
+  --step-1: clamp(1.3rem, 1.2rem + 0.5vw, 1.55rem);
+  --step-2: clamp(1.6rem, 1.4rem + 1vw, 2.1rem);
+  --step-3: clamp(2rem, 1.6rem + 2vw, 3rem);
+  --step-4: clamp(2.6rem, 1.9rem + 3.5vw, 4.5rem);
+  --leading: 1.55;
+  --tracking-caps: 0.08em;
+
+  /* Spacing and layout */
+  --space-2xs: 0.25rem;
+  --space-xs: 0.5rem;
+  --space-s: 1rem;
+  --space-m: 1.5rem;
+  --space-l: 2.5rem;
+  --space-xl: 4rem;
+  --space-2xl: 6rem;
+  --measure: 38rem;
+  --page-width: 54rem;
+  --page-margin: clamp(1.25rem, 6vw, 5.5rem);
+  --radius: 2px;
+}

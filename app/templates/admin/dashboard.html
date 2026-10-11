@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Admin | D.S. Morgan{% endblock %}
+{% block running_head %}Librarian&rsquo;s Desk{% endblock %}
+{% block main_class %}admin-page{% endblock %}
+{% block content %}
+  <h1>Admin Dashboard</h1>
+  <div class="toolbar">
+    <p>Signed in as {{ current_user.username }}.</p>
+    <form method="post" action="{{ url_for('admin.logout') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button type="submit" class="secondary">Sign out</button>
+    </form>
+  </div>
+  <h2 id="cv-requests">CV Requests</h2>
+  {% for item in cv_requests %}
+    <article class="admin-entry{% if item.handled %} is-handled{% endif %}">
+      <h3>{{ item.name }} <span class="status">&middot; {{ item.organization }}</span></h3>
+      <p class="status">
+        {{ item.created_at.strftime('%B') }} {{ item.created_at.day }}, {{ item.created_at.year }}
+        &middot; {{ reasons.get(item.reason, item.reason) }}
+        &middot; {{ "Handled" if item.handled else "Awaiting reply" }}
+        {% if not item.notified %}&middot; <span class="field-error">Email not sent</span>{% endif %}
+      </p>
+      <p><a href="mailto:{{ item.email }}?subject=Curriculum%20Vitae%20%E2%80%94%20Drew%20M.%20Schaffner">{{ item.email }}</a>
+        {% if item.phone %}&middot; {{ item.phone }}{% endif %}
+        {% if item.role %}&middot; {{ item.role }}{% endif %}</p>
+      {% if item.message %}<p class="request-message">{{ item.message }}</p>{% endif %}
+      <form method="post" action="{{ url_for('admin.toggle_request_handled', request_id=item.id) }}">
+        {{ csrf_form.hidden_tag() }}
+        <button type="submit" class="secondary">{{ "Mark unhandled" if item.handled else "Mark handled" }}</button>
+      </form>
+    </article>
+  {% else %}
+    <p class="muted">No CV requests yet.</p>
+  {% endfor %}
+
+  <h2>Papers &amp; Projects</h2>
+  <p><a class="button" href="{{ url_for('admin.create_entry') }}">Add entry</a></p>
+  {% for entry in entries %}
+    <article class="admin-entry">
+      <h3>{{ entry.title }}</h3>
+      <p class="status">{{ entry.entry_type | capitalize }} &middot;
+        {{ "Published" if entry.published else "Draft" }}</p>
+      {% if entry.written_date %}
+        <p>Written: {{ entry.written_date.strftime('%B %d, %Y') }}</p>
+      {% endif %}
+      <p><a href="{{ entry.link }}">View work</a></p>
+      {% if entry.summary %}<p class="muted">{{ entry.summary }}</p>{% endif %}
+      {% if entry.version_control_url %}
+        <p><a href="{{ entry.version_control_url }}">Version Control</a></p>
+      {% endif %}
+      <div class="toolbar">
+        <a href="{{ url_for('admin.edit_entry', entry_id=entry.id) }}">Edit</a>
+        <a href="{{ url_for('admin.delete_entry', entry_id=entry.id) }}">Delete</a>
+      </div>
+    </article>
+  {% else %}
+    <p>No entries yet. Add your first paper or project above.</p>
+  {% endfor %}
+{% endblock %}

@@ -1,0 +1,566 @@
+/* Components: reusable pieces of the book. */
+
+/* Red silk ribbon bookmark hanging from the top edge of the page */
+.ribbon {
+  position: absolute;
+  top: -0.5rem;
+  right: var(--page-margin);
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 6.25rem;
+  padding-bottom: 0.9rem;
+  background: linear-gradient(90deg, #00000026, transparent 30%, #ffffff12 70%, #00000026), var(--accent);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% calc(100% - 0.8rem), 0 100%);
+  color: var(--accent-ink);
+  font-size: var(--step--1);
+  font-variant-caps: all-small-caps;
+  letter-spacing: var(--tracking-caps);
+  text-decoration: none;
+  writing-mode: vertical-rl;
+  filter: drop-shadow(1px 2px 2px #0000004d);
+}
+
+.ribbon:hover {
+  height: 6.75rem;
+  color: var(--accent-ink);
+  background-color: var(--accent-bright);
+}
+
+.ribbon:focus-visible {
+  outline-offset: 2px;
+}
+
+/* Running head and colophon */
+.running-head {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-s);
+  padding-bottom: var(--space-xs);
+  padding-right: 3.5rem;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink-soft);
+  font-size: var(--step--1);
+  font-variant-caps: all-small-caps;
+  letter-spacing: var(--tracking-caps);
+}
+
+.running-head a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.running-head a:hover {
+  color: var(--accent);
+}
+
+.colophon {
+  margin-top: var(--space-2xl);
+  padding-top: var(--space-m);
+  border-top: 1px solid var(--rule);
+  color: var(--ink-soft);
+  font-size: var(--step--1);
+  text-align: center;
+}
+
+.colophon p {
+  margin-bottom: var(--space-2xs);
+}
+
+.colophon a {
+  color: inherit;
+}
+
+.folio {
+  margin-bottom: var(--space-s);
+  color: var(--ink);
+  font-size: var(--step-0);
+}
+
+.folio::before,
+.folio::after {
+  content: "\2014";
+  margin-inline: 0.6em;
+  color: var(--rule);
+}
+
+.page-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2xs) var(--space-m);
+  margin: 0 0 var(--space-s);
+  padding: 0;
+  list-style: none;
+  font-variant-caps: all-small-caps;
+  letter-spacing: var(--tracking-caps);
+}
+
+.page-list a {
+  text-decoration: none;
+}
+
+.page-list a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.page-list a[aria-current="page"] {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em;
+}
+
+/* Previous / next page turns */
+.page-turn {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-s);
+  margin-top: var(--space-2xl);
+  font-style: italic;
+}
+
+.page-turn a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.page-turn a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.page-turn a[rel="next"] {
+  margin-left: auto;
+  text-align: right;
+}
+
+.page-turn + .colophon {
+  margin-top: var(--space-m);
+}
+
+/* Ornaments and page openings */
+.ornament {
+  margin-block: var(--space-xl);
+  color: var(--accent);
+  font-size: var(--step-1);
+  text-align: center;
+}
+
+.ornament::before {
+  content: "\2766";
+}
+
+.page-head {
+  margin-bottom: var(--space-l);
+  text-align: center;
+}
+
+.page-head h1 {
+  font-size: var(--step-3);
+}
+
+.page-head h1::after {
+  content: "";
+  display: block;
+  width: 4rem;
+  margin: var(--space-s) auto 0;
+  border-top: 1px solid var(--accent);
+}
+
+.page-head > p {
+  max-width: var(--measure);
+  margin: var(--space-s) auto 0;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+.drop-cap::first-letter {
+  float: left;
+  margin: 0.08em 0.1em 0 0;
+  color: var(--accent);
+  font-size: 3.4em;
+  line-height: 0.8;
+}
+
+.prose {
+  max-width: var(--measure);
+  margin-inline: auto;
+}
+
+/* Epigraph */
+.epigraph {
+  max-width: 30rem;
+  margin: var(--space-l) auto;
+  text-align: center;
+}
+
+.epigraph p {
+  margin-bottom: var(--space-xs);
+  font-size: var(--step-1);
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.epigraph cite {
+  color: var(--ink-soft);
+  font-style: normal;
+  font-variant-caps: all-small-caps;
+  letter-spacing: var(--tracking-caps);
+}
+
+.epigraph cite::before {
+  content: "\2014\2002";
+}
+
+/* Table of contents with dotted leaders */
+.contents {
+  max-width: 30rem;
+  margin-inline: auto;
+}
+
+.contents {
+  margin-top: var(--space-l);
+}
+
+.contents h2 {
+  margin-bottom: var(--space-m);
+  font-size: var(--step-1);
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.18em;
+  text-align: center;
+}
+
+.contents ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contents a {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-xs);
+  padding-block: var(--space-xs);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.contents a::after {
+  content: "";
+  order: 1;
+  flex: 1;
+  min-width: 1.5rem;
+  border-bottom: 2px dotted var(--rule);
+  transform: translateY(-0.3em);
+}
+
+.contents .toc-title {
+  order: 0;
+}
+
+.contents .toc-numeral {
+  order: 2;
+  color: var(--accent);
+  font-variant-caps: all-small-caps;
+}
+
+.contents a:hover .toc-title {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+/* Glossary list for disciplines */
+.glossary {
+  display: grid;
+  gap: var(--space-m) var(--space-l);
+  margin: 0;
+}
+
+.glossary div {
+  break-inside: avoid;
+}
+
+.glossary dt {
+  margin-bottom: var(--space-2xs);
+  font-size: var(--step-1);
+}
+
+.glossary dd {
+  margin: 0;
+  color: var(--ink-soft);
+  hyphens: auto;
+}
+
+/* Library catalog cards for papers and projects */
+.catalog {
+  display: grid;
+  gap: var(--space-m);
+}
+
+.catalog-card {
+  padding: var(--space-m);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background:
+    repeating-linear-gradient(transparent 0 calc(1.6em - 1px), #8fa6c022 calc(1.6em - 1px) 1.6em),
+    hsl(42, 55%, 97%);
+  background-position: 0 3.2em;
+  box-shadow: 0 1px 2px #3a281a1f;
+}
+
+.catalog-card header {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-s);
+  margin-bottom: var(--space-s);
+  padding-bottom: var(--space-xs);
+  border-bottom: 2px solid var(--accent);
+  color: var(--ink-soft);
+  font-size: var(--step--1);
+  font-variant-caps: all-small-caps;
+  letter-spacing: var(--tracking-caps);
+}
+
+.call-number {
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.catalog-card h2 {
+  font-size: var(--step-1);
+
+  margin-bottom: var(--space-xs);
+}
+
+.catalog-card h2 a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.catalog-card h2 a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.catalog-card .toolbar {
+  margin-top: var(--space-s);
+}
+
+.empty-state {
+  padding: var(--space-m);
+  border: 1px dashed var(--rule);
+  color: var(--ink-soft);
+  font-style: italic;
+  text-align: center;
+}
+
+/* Ledger for the CV */
+.ledger {
+  margin: 0 0 var(--space-l);
+}
+
+.ledger-heading {
+  margin-bottom: var(--space-s);
+  padding-bottom: var(--space-2xs);
+  border-bottom: 1px solid var(--rule);
+  color: var(--accent);
+  font-size: var(--step-0);
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.14em;
+}
+
+.ledger-entry {
+  padding-block: var(--space-xs);
+}
+
+.ledger-entry + .ledger-entry {
+  border-top: 1px dotted var(--rule);
+}
+
+.ledger-entry h3 {
+  margin: 0;
+  font-size: var(--step-0);
+  font-weight: 600;
+}
+
+.ledger-entry p {
+  margin: 0;
+}
+
+/* Generic toolbar, buttons, notices */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-xs) var(--space-m);
+}
+
+.toolbar-centered {
+  justify-content: center;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button,
+.button,
+input[type="submit"] {
+  display: inline-block;
+  padding: 0.45rem 1.1rem;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-variant-caps: all-small-caps;
+  letter-spacing: var(--tracking-caps);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+button:hover,
+.button:hover,
+input[type="submit"]:hover {
+  background: var(--accent-bright);
+  color: var(--accent-ink);
+}
+
+.secondary {
+  background: transparent;
+  color: var(--accent);
+}
+
+.danger {
+  border-color: var(--danger);
+  background: var(--danger);
+}
+
+.notice {
+  margin-bottom: var(--space-m);
+  padding: var(--space-xs) var(--space-s);
+  border-left: 3px solid var(--accent);
+  background: hsl(42, 55%, 97%);
+}
+
+.notice-error,
+.field-error {
+  color: var(--danger);
+}
+
+.help-text,
+.status {
+  color: var(--ink-soft);
+  font-size: var(--step--1);
+}
+
+.card-summary {
+  margin-block: var(--space-xs) 0;
+  hyphens: auto;
+}
+
+/* CV request */
+.request-card {
+  max-width: 40rem;
+  margin: var(--space-xl) auto 0;
+  padding: var(--space-l) var(--space-m);
+  border-top: 2px solid var(--accent);
+  border-bottom: 1px solid var(--rule);
+}
+
+.request-card h2 {
+  margin-bottom: var(--space-xs);
+  font-size: var(--step-2);
+  text-align: center;
+}
+
+.request-card > p {
+  text-align: center;
+}
+
+.form-grid {
+  display: grid;
+  gap: 0 var(--space-m);
+}
+
+.form-grid .form-field {
+  margin-block: var(--space-s) 0;
+}
+
+.honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.cf-turnstile {
+  margin-block: var(--space-m) var(--space-xs);
+}
+
+.request-message {
+  padding-left: var(--space-s);
+  border-left: 2px solid var(--rule);
+  white-space: pre-line;
+}
+
+.is-handled {
+  opacity: 0.6;
+}
+
+/* Forms */
+.editor-form,
+.login-form {
+  max-width: var(--measure);
+}
+
+.form-field {
+  margin-block: var(--space-m);
+}
+
+.form-field label,
+.login-form label {
+  display: block;
+  margin-bottom: var(--space-2xs);
+  font-variant-caps: all-small-caps;
+  letter-spacing: var(--tracking-caps);
+}
+
+input:not([type="checkbox"]):not([type="hidden"]):not([type="submit"]),
+select,
+textarea {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: hsl(42, 55%, 98%);
+  color: var(--ink);
+}
+
+input[type="checkbox"] {
+  accent-color: var(--accent);
+}
+
+@media (min-width: 48rem) {
+  .form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .form-field-wide {
+    grid-column: 1 / -1;
+  }
+
+  .glossary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .catalog {
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  }
+}
