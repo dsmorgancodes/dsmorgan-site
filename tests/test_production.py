@@ -37,8 +37,8 @@ def test_static_assets_are_versioned(client):
     assert "max-age=3600" in plain.headers["Cache-Control"]
 
 
-def test_healthz(client):
-    response = client.get("/healthz")
+def test_health(client):
+    response = client.get("/health")
     assert response.status_code == 200
     assert response.json == {"status": "ok"}
 

@@ -100,6 +100,24 @@ hostnames). Optional: `WEB_CONCURRENCY` and `GUNICORN_THREADS` (defaults 1 and 8
 `FLASK_PROXY_HOPS` (default 1, for Cloud Run's front end), and
 `FLASK_TRUST_CF_CONNECTING_IP` (only when traffic is proxied through Cloudflare).
 
+Deploy to Cloud Run (project `dsmorgan-site`, region `us-central1`).
+`FLASK_SECRET_KEY`, `DATABASE_URL`, and `FLASK_RESEND_API_KEY` come from
+Secret Manager (`flask-secret-key`, `database-url`, `resend-api-key`):
+
+```sh
+gcloud run deploy dsmorgan-site --source . --region us-central1 \
+  --max-instances=1 --min-instances=0
+```
+
+Settings persist between deploys. Emergency stop (blocks public traffic;
+undo with `--ingress all`):
+
+```sh
+gcloud run services update dsmorgan-site --region us-central1 --ingress internal
+```
+
+Cloud Run reserves paths ending in `z`, so the health check is `/health`.
+
 Run migrations from a trusted machine against Neon before deploying code that
 needs them: `uv run flask --app app db upgrade`. The container never migrates.
 
@@ -110,7 +128,7 @@ Hardening built in:
 - Admin pages are never cached; static files get a `?v=` content hash and a
   one-year cache.
 - Admin login locks out an address after 5 failures in 15 minutes.
-- `/healthz`, `/robots.txt`, and `/sitemap.xml` (built from the page registry).
+- `/health`, `/robots.txt`, and `/sitemap.xml` (built from the page registry).
 
 ## Checks
 

@@ -186,8 +186,8 @@ def sitemap():
     return Response(body, mimetype="application/xml")
 
 
-@pages.get("/healthz")
-def healthz():
+@pages.get("/health")
+def health():
     return {"status": "ok"}
 
 
