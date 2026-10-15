@@ -7,3 +7,4 @@ instance/
 .ruff_cache/
 .DS_Store
 PRODNOTES.md
+gha-creds-*.json

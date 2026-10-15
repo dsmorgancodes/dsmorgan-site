@@ -12,3 +12,4 @@ tests
 PRODNOTES.md
 Dockerfile
 .dockerignore
+gha-creds-*.json

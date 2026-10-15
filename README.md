@@ -139,7 +139,25 @@ uv run ruff format --check app tests
 ```
 
 GitHub Actions runs these checks and a Docker build on every push to `main`
-and on pull requests.
+and on pull requests. After both jobs pass, pushes to `main` also build and
+publish a commit-tagged image to Artifact Registry, deploy it to Cloud Run, and
+check `/health`. Pull requests never deploy. Deployments run one at a time;
+existing environment variables, secret references, and instance limits are
+preserved. No manual deploy command is needed for normal updates.
+
+Deployment uses Workload Identity Federation, not a stored Google key.
+The `github-actions` pool and `dsmorgan-site` provider in project
+`dsmorgan-site` trust only push events on `main` from this repository's numeric
+GitHub repository and owner IDs. The `github-deploy` service account can write
+to the `cloud-run-source-deploy` Artifact Registry repository, update this
+Cloud Run service, and act as its existing runtime service account. It has no
+direct Secret Manager access.
+
+Watch deployment status in GitHub's **Actions** tab or with `gh run list`.
+If checks fail, the current live revision stays unchanged. A failed post-deploy
+health check marks the workflow failed but does not automatically roll back;
+use Cloud Run's revision traffic controls if a rollback is needed.
+Schema migrations still need to run before pushing code that requires them.
 
 Tests use an isolated in-memory SQLite database, not Neon. Model changes
 still require reviewed Alembic migrations; this editor adds no schema changes.
