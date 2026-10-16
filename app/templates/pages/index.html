@@ -1,26 +1,54 @@
 {% extends "base.html" %}
 {% block content %}
   <section class="title-page" aria-labelledby="page-heading">
-    <p class="kicker">Mathematics &amp; Data Science</p>
     <h1 id="page-heading">Drew M. Schaffner</h1>
-    <div class="title-rule" aria-hidden="true"></div>
-    <p class="credentials">Master of Science in Mathematics</p>
-    <p class="institution">Northwest Missouri State University</p>
-    <blockquote class="epigraph">
-      <p>&ldquo;No human investigation can be called real science if it cannot
-        be demonstrated mathematically.&rdquo;</p>
-      <cite>Leonardo da Vinci</cite>
-    </blockquote>
+    <p class="research-focus">Mathematics &amp; Data Science</p>
+    <p class="introduction">My work brings together mathematics, data analysis, and
+      practical systems. Here you can explore my areas of study, papers, and
+      projects, or get in touch about research and professional collaboration.</p>
+    <p class="toolbar">
+      <a class="button" href="{{ url_for('pages.work') }}">Explore selected work</a>
+      <a href="{{ url_for('pages.contact') }}">Get in touch</a>
+    </p>
   </section>
 
-  <div class="ornament" aria-hidden="true"></div>
+  <section class="workspace-section" aria-labelledby="education-heading">
+    <h2 id="education-heading" class="workspace-label">Education</h2>
+    <div class="education-panel">
+      <div class="degree-grid">
+        <article class="degree" aria-labelledby="masters-heading">
+          <h3 id="masters-heading">Master of Science</h3>
+          <p class="degree-subject">Mathematics</p>
+          <p class="degree-institution">Northwest Missouri State University</p>
+        </article>
+        <article class="degree" aria-labelledby="bachelors-heading">
+          <h3 id="bachelors-heading">Bachelor of Science</h3>
+          <p class="degree-subject">Mathematics</p>
+          <p class="degree-institution">Olivet Nazarene University</p>
+        </article>
+      </div>
+      <p class="education-action"><a href="{{ url_for('pages.cv') }}">View experience &amp; request full CV <span aria-hidden="true">&rarr;</span></a></p>
+    </div>
+  </section>
 
-  <nav class="contents" aria-labelledby="contents-heading">
-    <h2 id="contents-heading">Contents</h2>
-    <ol>
-      {% for page in book_pages if page.endpoint != "index" %}
-        <li><a href="{{ url_for('pages.' ~ page.endpoint) }}"><span class="toc-title">{{ page.title }}</span><span class="toc-numeral">{{ loop.index }}</span></a></li>
-      {% endfor %}
-    </ol>
-  </nav>
+  <section class="workspace-section" aria-labelledby="explore-heading">
+    <h2 id="explore-heading" class="workspace-label">Explore</h2>
+    <div class="workbench-grid">
+      <article class="workbench-panel" aria-labelledby="studies-heading">
+        <h3 id="studies-heading">Studies</h3>
+        <p>Mathematical interests and areas of study.</p>
+        <a href="{{ url_for('pages.studies') }}">Explore studies <span aria-hidden="true">&rarr;</span></a>
+      </article>
+      <article class="workbench-panel" aria-labelledby="work-heading">
+        <h3 id="work-heading">Selected Work</h3>
+        <p>Papers, coursework, and practical projects.</p>
+        <a href="{{ url_for('pages.work') }}">Browse work <span aria-hidden="true">&rarr;</span></a>
+      </article>
+      <article class="workbench-panel collaboration-panel" aria-labelledby="collaboration-heading">
+        <h3 id="collaboration-heading">Collaboration</h3>
+        <p>Research questions or a professional inquiry?</p>
+        <a href="{{ url_for('pages.contact') }}">Get in touch <span aria-hidden="true">&rarr;</span></a>
+      </article>
+    </div>
+  </section>
 {% endblock %}

@@ -166,13 +166,14 @@ def test_index_lists_contents_and_assets(client):
     assert response.status_code == 200
     html = response.get_data(as_text=True)
     for path in BOOK[1:]:
-        assert f'href="{path}"><span class="toc-title">' in html
+        assert f'href="{path}"' in html
     assert 'href="#main-content"' in html
-    assert 'class="ribbon" href="/"' in html
+    assert 'class="terminal-nav" aria-label="Main navigation"' in html
+    assert 'class="ribbon"' not in html
     assert 'rel="canonical" href="https://dsmorgan.com/"' in html
     assert 'rel="icon" href="/static/favicon.svg?v=' in html
     assert "/admin" not in html
-    for sheet in ("tokens", "base", "components", "pages"):
+    for sheet in ("tokens", "base", "components", "pages", "terminal"):
         assert f"/static/css/{sheet}.css" in html
         assert client.get(f"/static/css/{sheet}.css").status_code == 200
     for asset in ("paper-grain.svg", "favicon.svg", "fonts/eb-garamond-LICENSE.txt"):
@@ -188,23 +189,13 @@ def test_index_lists_contents_and_assets(client):
 
 
 @pytest.mark.parametrize("position", range(len(BOOK)))
-def test_book_pages_turn_in_order(client, position):
+def test_pages_have_current_navigation(client, position):
     html = client.get(BOOK[position]).get_data(as_text=True)
     assert f'<a href="{BOOK[position]}" aria-current="page">' in html
     assert html.count('aria-current="page"') == 1
     assert '<meta property="og:title"' in html
-    if position > 0:
-        assert f'rel="prev" href="{BOOK[position - 1]}"' in html
-        assert (
-            f'<p class="folio"><span class="visually-hidden">Page </span>{position}</p>'
-            in html
-        )
-    else:
-        assert 'rel="prev"' not in html
-    if position + 1 < len(BOOK):
-        assert f'rel="next" href="{BOOK[position + 1]}"' in html
-    else:
-        assert 'rel="next"' not in html
+    assert 'class="folio"' not in html
+    assert 'class="page-turn"' not in html
 
 
 def test_page_content(client):
@@ -217,10 +208,10 @@ def test_page_content(client):
     assert "challenges.cloudflare.com" not in cv
 
 
-def test_missing_page_uses_book_404(client):
+def test_missing_page_uses_terminal_404(client):
     response = client.get("/no-such-volume")
     assert response.status_code == 404
-    assert b"This volume is missing from the stacks." in response.data
+    assert b"404: Page not found" in response.data
     assert b'name="robots" content="noindex"' in response.data
 
 

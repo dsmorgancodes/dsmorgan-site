@@ -2,19 +2,18 @@
 {% from "macros.html" import page_head %}
 {% block content %}
   <section aria-labelledby="page-heading">
-    {{ page_head("Selected Work", "Papers, coursework, and projects from the catalog. Each card links to the work; code is linked separately.") }}
+    {{ page_head("Selected Work", "Papers, coursework, and projects in mathematics and data science.") }}
     {% if entries %}
       <div class="catalog">
         {% for entry in entries %}
           <article class="catalog-card">
             <header>
               <span>{{ entry.entry_type | capitalize }}</span>
-              <span class="call-number">QA {{ entry.written_date.year if entry.written_date else "n.d." }} &middot; No. {{ entry.id }}</span>
+              {% if entry.written_date %}
+                <time datetime="{{ entry.written_date.isoformat() }}">{{ entry.written_date.strftime('%B') }} {{ entry.written_date.day }}, {{ entry.written_date.year }}</time>
+              {% endif %}
             </header>
             <h2><a href="{{ entry.link }}">{{ entry.title }}</a></h2>
-            {% if entry.written_date %}
-              <p class="muted"><time datetime="{{ entry.written_date.isoformat() }}">{{ entry.written_date.strftime('%B') }} {{ entry.written_date.day }}, {{ entry.written_date.year }}</time></p>
-            {% endif %}
             {% if entry.summary %}
               <p class="card-summary">{{ entry.summary }}</p>
             {% endif %}

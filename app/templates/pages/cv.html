@@ -67,7 +67,7 @@
         {{ form.website(tabindex="-1", autocomplete="off") }}
       </div>
       {% if site_key %}
-        <div class="cf-turnstile" data-sitekey="{{ site_key }}" data-theme="light"></div>
+        <div class="cf-turnstile" data-sitekey="{{ site_key }}" data-theme="auto" data-size="flexible"></div>
       {% endif %}
       <p class="help-text">Your details are used only to respond to this request.</p>
       <p>{{ form.submit() }}</p>
