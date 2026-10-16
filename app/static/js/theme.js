@@ -1,7 +1,6 @@
 (() => {
-  const themes = ["rose-pine", "moon", "dawn"];
-  const colors = { "rose-pine": "#191724", moon: "#232136", dawn: "#faf4ed" };
-  const system = window.matchMedia("(prefers-color-scheme: light)");
+  const themes = ["light", "dark"];
+  const colors = { light: "#fdf6e3", dark: "#2d353b" };
   let saved = null;
   try {
     saved = localStorage.getItem("dsmorgan-theme");
@@ -12,21 +11,21 @@
   function apply(theme) {
     document.documentElement.dataset.theme = theme;
     document.querySelector('meta[name="theme-color"]').content = colors[theme];
-    document.querySelectorAll('input[name="theme"]').forEach((input) => {
-      input.checked = input.value === theme;
-    });
+    const toggle = document.querySelector(".theme-toggle");
+    if (toggle) {
+      const label = `Switch to Everforest ${theme === "light" ? "Dark" : "Light"}`;
+      toggle.setAttribute("aria-label", label);
+      toggle.setAttribute("title", label);
+      toggle.setAttribute("aria-pressed", String(theme === "dark"));
+    }
   }
-  apply(chosen || (system.matches ? "dawn" : "rose-pine"));
-  system.addEventListener("change", () => {
-    if (!chosen) apply(system.matches ? "dawn" : "rose-pine");
-  });
+  apply(chosen || "light");
   document.addEventListener("DOMContentLoaded", () => {
-    const picker = document.querySelector(".theme-picker");
-    picker.hidden = false;
+    const toggle = document.querySelector(".theme-toggle");
+    toggle.hidden = false;
     apply(document.documentElement.dataset.theme);
-    picker.addEventListener("change", (event) => {
-      if (!themes.includes(event.target.value)) return;
-      chosen = event.target.value;
+    toggle.addEventListener("click", () => {
+      chosen = document.documentElement.dataset.theme === "light" ? "dark" : "light";
       apply(chosen);
       try {
         localStorage.setItem("dsmorgan-theme", chosen);
@@ -34,19 +33,10 @@
         console.warn("Theme preference could not be saved.", error);
       }
     });
-    document.addEventListener("click", (event) => {
-      if (!picker.contains(event.target)) picker.open = false;
-    });
-    picker.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") {
-        picker.open = false;
-        picker.querySelector("summary").focus();
-      }
-    });
     window.addEventListener("storage", (event) => {
       if (event.key !== "dsmorgan-theme" && event.key !== null) return;
       chosen = themes.includes(event.newValue) ? event.newValue : null;
-      apply(chosen || (system.matches ? "dawn" : "rose-pine"));
+      apply(chosen || "light");
     });
   });
 })();

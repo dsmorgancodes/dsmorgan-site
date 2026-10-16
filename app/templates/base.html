@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#191724">
+    <meta name="theme-color" content="#fdf6e3">
     <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
     <title>{% block title %}{% if page_title %}{{ page_title }} | {% endif %}Drew M. Schaffner{% endblock %}</title>
     {%- set description = current_page.description if current_page else "Drew M. Schaffner, M.S. Mathematics." %}
@@ -32,21 +32,11 @@
     <div class="page">
       <header class="running-head">
         <a class="site-name" href="{{ url_for('pages.index') }}">D.S. Morgan</a>
-        <details class="theme-picker" hidden>
-          <summary aria-label="Choose light or dark theme" title="Appearance">
+        <button class="theme-toggle" type="button" hidden aria-label="Switch to Everforest Dark" aria-pressed="false" title="Switch to Everforest Dark">
             <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M16 4C10-1 5 5 7 10C0 11 1 19 7 21C5 28 12 32 16 27C21 32 28 27 25 21C32 18 31 11 25 10C27 3 20 0 16 4Z"/>
-              <circle cx="16" cy="16" r="7"/>
-              <path d="M16 9A7 7 0 0 0 16 23Z" fill="currentColor" stroke="none"/>
+              <path d="m16 3-8 10h4l-7 9h9v7h4v-7h9l-7-9h4Z" stroke-linejoin="round"/>
             </svg>
-          </summary>
-          <fieldset>
-            <legend>Appearance</legend>
-            <label><input type="radio" name="theme" value="rose-pine"> Rosé Pine <span>Dark</span></label>
-            <label><input type="radio" name="theme" value="moon"> Moon <span>Dim</span></label>
-            <label><input type="radio" name="theme" value="dawn"> Dawn <span>Light</span></label>
-          </fieldset>
-        </details>
+        </button>
       </header>
       <nav class="terminal-nav" aria-label="Main navigation">
         {% for page in book_pages %}

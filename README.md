@@ -38,13 +38,13 @@ widget and check are skipped. Cloudflare's test keys
 ## Design system
 
 The research-terminal layout uses system monospace headings and navigation
-with system sans-serif body text, standard cursors, and three
-Rosé Pine variants: Rosé Pine (dark), Moon (dim), and Dawn (light).
-The rose-shaped light/dark control in the header opens a keyboard-accessible
-radio picker. The initial appearance follows the system light/dark preference;
+with system sans-serif body text, standard cursors, and Everforest Light and Dark.
+The tree button in the header toggles directly between the two themes using
+a keyboard-accessible button. The initial appearance is always Light;
 an explicit choice is saved in localStorage and applies across pages and tabs.
 If storage is unavailable the choice still works for the current page, with a
-console warning. Without JavaScript the site remains readable in dark Rosé Pine.
+console warning. Without JavaScript the site remains readable in Everforest Light.
+Old Rosé Pine preferences are ignored and fall back to Light.
 There are no shell prompts, filesystem-style navigation, typing animations,
 or simulated command input. The homepage leads with an introduction and links
 to work and contact, followed by a labeled Education panel with both degrees
@@ -65,8 +65,8 @@ CSS is loaded in this order:
 
 `js/theme.js` applies the theme before styles load to avoid a flash, and handles
 preference persistence. It is self-hosted and works with the existing CSP.
-Palette values derive from https://rosepinetheme.com/palette/ with contrast
-adjustments for secondary text and Dawn accents. Turnstile follows the system
+Palette values derive from https://github.com/sainnhe/everforest with contrast
+adjustments for secondary text and light accents. Turnstile follows the system
 theme independently and uses its flexible-width widget.
 
 To add a page, add a `Page` to `PAGES`, a route in `app/pages.py`, and a

@@ -6,10 +6,9 @@ import pytest
 )
 def test_theme_control_on_every_page(client, path):
     html = client.get(path).get_data(as_text=True)
-    assert 'aria-label="Choose light or dark theme"' in html
-    assert 'name="theme" value="rose-pine"' in html
-    assert 'name="theme" value="moon"' in html
-    assert 'name="theme" value="dawn"' in html
+    assert 'aria-label="Switch to Everforest Dark"' in html
+    assert 'class="theme-toggle"' in html
+    assert 'aria-pressed="false"' in html
     assert "/static/js/theme.js?v=" in html
     assert html.index("/static/js/theme.js") < html.index("/static/css/tokens.css")
     assert "/static/css/terminal.css?v=" in html
@@ -46,5 +45,5 @@ def test_homepage_education_and_workbench(client):
 def test_theme_assets_available(client):
     assert client.get("/static/js/theme.js").status_code == 200
     css = client.get("/static/css/terminal.css").get_data(as_text=True)
-    for variant in ("rose-pine", "moon", "dawn"):
+    for variant in ("light", "dark"):
         assert f'[data-theme="{variant}"]' in css
