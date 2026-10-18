@@ -85,9 +85,7 @@ def test_resume_section_symbols(client):
     headings = html.split('<h2 class="ledger-heading">')[1:]
     assert len(headings) == 3
     for markup, title in zip(headings, ("Education", "Positions", "Skills")):
-        heading = ElementTree.fromstring(
-            "<h2>" + markup.split("</h2>", 1)[0] + "</h2>"
-        )
+        heading = ElementTree.fromstring("<h2>" + markup.split("</h2>", 1)[0] + "</h2>")
         symbol = heading.find("svg")
         assert symbol is not None
         assert symbol.attrib["aria-hidden"] == "true"

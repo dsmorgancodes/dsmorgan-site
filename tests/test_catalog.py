@@ -75,7 +75,7 @@ def test_catalog_lifecycle(client, app):
     assert b"Version Control" in work
     assert b'href="https://example.com/explorer">Open explorer</a>' in work
     assert b'href="https://example.com/paper">Read the paper</a>' in work
-    assert b'Open explorer' in client.get("/admin").data
+    assert b"Open explorer" in client.get("/admin").data
     assert b'value="https://example.com/explorer"' in client.get(path).data
     assert b'<p class="card-summary">A short abstract.</p>' in work
 
@@ -274,7 +274,7 @@ def test_public_catalog_order_and_escaping(client, app):
     icons = {}
     for markup in html.split('<span class="catalog-type">')[1:]:
         label = ElementTree.fromstring(
-            '<span>' + markup.split("</span>", 1)[0] + "</span>"
+            "<span>" + markup.split("</span>", 1)[0] + "</span>"
         )
         icon = label.find("svg")
         assert icon.attrib["aria-hidden"] == "true"
