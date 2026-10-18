@@ -124,7 +124,7 @@ def test_resume_education_gpa_badges(client):
     [
         ("/studies", "Areas of Study", "My graduate disciplines"),
         ("/cv", "Resume", "My work connects mathematics"),
-        ("/work", "Selected Work", "Papers, coursework, and projects"),
+        ("/work", "Selected Work", "Papers, proofs, coursework, and projects"),
         ("/contact", "Correspondence", "For research, collaboration"),
     ],
 )
@@ -153,6 +153,16 @@ def test_studies_pixel_art(client):
     assert len(stops) == 3
     assert stops[-1].attrib["stop-opacity"] == ".1"
     assert html.index('class="study-art"') < html.index('<dl class="glossary">')
+
+
+def test_graduate_resource_links(client):
+    html = client.get("/studies").get_data(as_text=True)
+    assert 'aria-label="Graduate study resources"' in html
+    assert 'href="https://maths.dsmorgan.com/notes">View Graduate Notes</a>' in html
+    assert (
+        'href="https://maths.dsmorgan.com/graduate-proofs">'
+        "View Select Graduate Assignments</a>"
+    ) in html
 
 
 def test_resume_header_pixel_art(client):

@@ -1,6 +1,6 @@
 # D.S. Morgan portfolio
 
-Flask portfolio with a private admin catalog for papers and projects.
+Flask portfolio with a private admin catalog for papers, projects, and proofs.
 The public site reads like a short book. `/` is the index (title page and
 contents); the pages follow in order: `/studies`, `/work`, `/cv`, `/contact`.
 The order, titles, and meta descriptions live in `PAGES` in `app/pages.py`;
@@ -188,3 +188,10 @@ requires migration `c8f3a2d5e6b1`; run `uv run flask --app app db upgrade` befor
 deploying this change. In the entry editor, keep the paper or project URL in the
 main link field and add its graphical demonstration in **Interactive explorer URL
 (optional)**. Published entries show a separate **Open explorer** link when provided.
+
+Proof entries require migration `d9a4b3e6f7c2`. Run
+`uv run flask --app app db upgrade` before deploying code using this type, then
+select **Proof** in the entry editor and provide its URL in the main link field.
+Proofs can also have an optional interactive explorer and Version Control link.
+To downgrade this migration, first reclassify any proof entries as papers or
+projects; the migration refuses to downgrade while proofs exist.

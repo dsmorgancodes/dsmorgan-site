@@ -50,12 +50,12 @@ class EntryForm(FlaskForm):
     )
     entry_type = SelectField(
         "Type",
-        choices=[("paper", "Paper"), ("project", "Project")],
+        choices=[("paper", "Paper"), ("project", "Project"), ("proof", "Proof")],
         validators=[DataRequired()],
     )
     written_date = DateField("Written date", validators=[Optional()])
     link = StringField(
-        "Paper or project link",
+        "Paper, project, or proof link",
         filters=[lambda value: value.strip() if value else value],
         validators=[DataRequired(), URL(), http_url],
     )

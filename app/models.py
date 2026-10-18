@@ -12,7 +12,7 @@ class PortfolioEntry(db.Model):
     __tablename__ = "portfolio_entries"
     __table_args__ = (
         CheckConstraint(
-            "entry_type IN ('paper', 'project')",
+            "entry_type IN ('paper', 'project', 'proof')",
             name="ck_portfolio_entries_entry_type",
         ),
     )

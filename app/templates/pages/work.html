@@ -4,7 +4,7 @@
   <section class="accent-page" aria-labelledby="page-heading">
     <div class="page-intro">
       <div class="study-intro-layout">
-        {{ page_head("Selected Work", "Papers, coursework, and projects in mathematics and data science.") }}
+        {{ page_head("Selected Work", "Papers, proofs, coursework, and projects in mathematics and data science.") }}
         {{ header_art("work") }}
       </div>
     </div>
@@ -21,6 +21,8 @@
                     <path d="M7 3h12v4h4v4h2v18H7ZM19 3v8h6M11 15h10m-10 5h10m-10 5h6"/>
                   {% elif entry.entry_type == "project" %}
                     <path d="M3 7h10v2h2v2h14v16H3ZM3 13h26"/>
+                  {% elif entry.entry_type == "proof" %}
+                    <path d="M7 3h18v26H7ZM11 9h10m-10 5h10m-10 5h4m3 3h4v4h-4Z"/>
                   {% endif %}
                 </svg>
                 {{ entry.entry_type | capitalize }}
@@ -46,7 +48,7 @@
         {% endfor %}
       </div>
     {% else %}
-      <p class="empty-state">Papers and projects are coming soon.</p>
+      <p class="empty-state">Papers, projects, and proofs are coming soon.</p>
     {% endif %}
   </section>
 {% endblock %}

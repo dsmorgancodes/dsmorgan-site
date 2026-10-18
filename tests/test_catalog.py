@@ -42,10 +42,16 @@ def entry_data(csrf, **overrides):
     return data
 
 
-def test_catalog_lifecycle(client, app):
+@pytest.mark.parametrize("entry_type", ["paper", "project", "proof"])
+def test_catalog_lifecycle(client, app, entry_type):
     login(client)
     csrf = token(client.get("/admin/entries/new"))
-    assert client.post("/admin/entries/new", data=entry_data(csrf)).status_code == 302
+    assert (
+        client.post(
+            "/admin/entries/new", data=entry_data(csrf, entry_type=entry_type)
+        ).status_code
+        == 302
+    )
     assert b"A paper" not in client.get("/work").data
     assert b"Draft" in client.get("/admin").data
     with app.app_context():
@@ -54,6 +60,7 @@ def test_catalog_lifecycle(client, app):
         assert entry.written_date == date(2025, 4, 12)
         assert entry.version_control_url is None
         assert entry.explorer_url is None
+        assert entry.entry_type == entry_type
 
     path = f"/admin/entries/{entry_id}/edit"
     csrf = token(client.get(path))
@@ -62,6 +69,7 @@ def test_catalog_lifecycle(client, app):
             path,
             data=entry_data(
                 csrf,
+                entry_type=entry_type,
                 published="y",
                 version_control_url="https://github.com/example/paper",
                 explorer_url="  https://example.com/explorer  ",
@@ -74,7 +82,10 @@ def test_catalog_lifecycle(client, app):
     assert b"A paper" in work
     assert b"Version Control" in work
     assert b'href="https://example.com/explorer">Open explorer</a>' in work
-    assert b'href="https://example.com/paper">Read the paper</a>' in work
+    assert (
+        f'href="https://example.com/paper">Read the {entry_type}</a>'.encode() in work
+    )
+    assert f"{entry_type.capitalize()}\n".encode() in work
     assert b"Open explorer" in client.get("/admin").data
     assert b'value="https://example.com/explorer"' in client.get(path).data
     assert b'<p class="card-summary">A short abstract.</p>' in work
@@ -82,7 +93,10 @@ def test_catalog_lifecycle(client, app):
     csrf = token(client.get(path))
     assert (
         client.post(
-            path, data=entry_data(csrf, title="Updated paper", written_date="")
+            path,
+            data=entry_data(
+                csrf, entry_type=entry_type, title="Updated paper", written_date=""
+            ),
         ).status_code
         == 302
     )
@@ -213,7 +227,7 @@ def test_pages_have_current_navigation(client, position):
 
 def test_page_content(client):
     assert b"Topology" in client.get("/studies").data
-    assert b"Papers and projects are coming soon." in client.get("/work").data
+    assert b"Papers, projects, and proofs are coming soon." in client.get("/work").data
     assert b'href="mailto:drew@dsmorgan.com"' in client.get("/contact").data
     cv = client.get("/cv").get_data(as_text=True)
     assert "Northwest Missouri State University" in cv
@@ -258,6 +272,12 @@ def test_public_catalog_order_and_escaping(client, app):
                     link="https://example.com/d",
                     published=False,
                 ),
+                PortfolioEntry(
+                    title="A linked proof",
+                    entry_type="proof",
+                    link="https://maths.dsmorgan.com/graduate-proofs",
+                    published=True,
+                ),
             ]
         )
         db.session.commit()
@@ -281,5 +301,5 @@ def test_public_catalog_order_and_escaping(client, app):
         assert icon.attrib["shape-rendering"] == "crispEdges"
         kind = icon.tail.strip()
         icons[kind] = icon.find("path").attrib["d"]
-    assert set(icons) == {"Paper", "Project"}
-    assert icons["Paper"] != icons["Project"]
+    assert set(icons) == {"Paper", "Project", "Proof"}
+    assert len(set(icons.values())) == 3

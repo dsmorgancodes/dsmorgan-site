@@ -123,6 +123,7 @@ select, textarea { background: var(--surface); }
 .study-intro-layout { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-m); }
 .study-intro-layout .page-head { flex: 1 1 24rem; min-width: 0; }
 .study-art { flex: 0 0 auto; color: var(--accent); }
+.study-resources { margin-top: var(--space-m); }
 .study-heading, .ledger-heading { display: flex; align-items: center; gap: var(--space-xs); }
 .study-symbol, .resume-symbol { flex: 0 0 auto; }
 

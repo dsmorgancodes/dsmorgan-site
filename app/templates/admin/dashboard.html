@@ -34,7 +34,7 @@
     <p class="muted">No CV requests yet.</p>
   {% endfor %}
 
-  <h2>Papers &amp; Projects</h2>
+  <h2>Papers, Projects &amp; Proofs</h2>
   <p><a class="button" href="{{ url_for('admin.create_entry') }}">Add entry</a></p>
   {% for entry in entries %}
     <article class="admin-entry">
@@ -58,6 +58,6 @@
       </div>
     </article>
   {% else %}
-    <p>No entries yet. Add your first paper or project above.</p>
+    <p>No entries yet. Add your first paper, project, or proof above.</p>
   {% endfor %}
 {% endblock %}
