@@ -1,5 +1,6 @@
 import re
 from datetime import date
+from xml.etree import ElementTree
 
 import pytest
 from sqlalchemy.exc import SQLAlchemyError
@@ -35,6 +36,7 @@ def entry_data(csrf, **overrides):
         "written_date": "2025-04-12",
         "link": "https://example.com/paper",
         "version_control_url": "",
+        "explorer_url": "",
     }
     data.update(overrides)
     return data
@@ -51,6 +53,7 @@ def test_catalog_lifecycle(client, app):
         entry_id = entry.id
         assert entry.written_date == date(2025, 4, 12)
         assert entry.version_control_url is None
+        assert entry.explorer_url is None
 
     path = f"/admin/entries/{entry_id}/edit"
     csrf = token(client.get(path))
@@ -61,6 +64,7 @@ def test_catalog_lifecycle(client, app):
                 csrf,
                 published="y",
                 version_control_url="https://github.com/example/paper",
+                explorer_url="  https://example.com/explorer  ",
                 summary="  A short abstract.  ",
             ),
         ).status_code
@@ -69,6 +73,10 @@ def test_catalog_lifecycle(client, app):
     work = client.get("/work").data
     assert b"A paper" in work
     assert b"Version Control" in work
+    assert b'href="https://example.com/explorer">Open explorer</a>' in work
+    assert b'href="https://example.com/paper">Read the paper</a>' in work
+    assert b'Open explorer' in client.get("/admin").data
+    assert b'value="https://example.com/explorer"' in client.get(path).data
     assert b'<p class="card-summary">A short abstract.</p>' in work
 
     csrf = token(client.get(path))
@@ -80,6 +88,8 @@ def test_catalog_lifecycle(client, app):
     )
     assert b"Updated paper" in client.get("/admin").data
     assert b"Updated paper" not in client.get("/work").data
+    with app.app_context():
+        assert db.session.get(PortfolioEntry, entry_id).explorer_url is None
 
     path = f"/admin/entries/{entry_id}/delete"
     page = client.get(path)
@@ -115,6 +125,9 @@ def test_requires_login(client, path):
         {"link": "javascript:alert(1)"},
         {"link": "ftp://example.com/paper"},
         {"version_control_url": "javascript:alert(1)"},
+        {"explorer_url": "javascript:alert(1)"},
+        {"explorer_url": "ftp://example.com/explorer"},
+        {"explorer_url": "not-a-url"},
     ],
 )
 def test_invalid_entries_are_not_saved(client, app, overrides):
@@ -258,3 +271,15 @@ def test_public_catalog_order_and_escaping(client, app):
     assert "<script>Latest work</script>" not in html
     assert "Hidden draft" not in html
     assert 'datetime="2025-01-01"' in html
+    icons = {}
+    for markup in html.split('<span class="catalog-type">')[1:]:
+        label = ElementTree.fromstring(
+            '<span>' + markup.split("</span>", 1)[0] + "</span>"
+        )
+        icon = label.find("svg")
+        assert icon.attrib["aria-hidden"] == "true"
+        assert icon.attrib["shape-rendering"] == "crispEdges"
+        kind = icon.tail.strip()
+        icons[kind] = icon.find("path").attrib["d"]
+    assert set(icons) == {"Paper", "Project"}
+    assert icons["Paper"] != icons["Project"]

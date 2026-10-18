@@ -4,3 +4,23 @@
     {% if intro %}<p>{{ intro }}</p>{% endif %}
   </header>
 {% endmacro %}
+
+{% macro header_art(kind) %}
+  <svg class="study-art" viewBox="0 0 64 64" width="128" height="128"
+       aria-hidden="true" focusable="false" fill="url(#{{ kind }}-art-fade)" shape-rendering="crispEdges">
+    <defs>
+      <linearGradient id="{{ kind }}-art-fade" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="currentColor"/>
+        <stop offset=".45" stop-color="currentColor" stop-opacity=".8"/>
+        <stop offset="1" stop-color="currentColor" stop-opacity=".1"/>
+      </linearGradient>
+    </defs>
+    {% if kind == "work" %}
+      <path fill-rule="evenodd" d="M6 12h20v4h4v4h28v34H6Zm4 4v34h44V24H28v-4h-6v-4Z"/>
+      <path d="M16 30h12v4H16Zm0 8h28v4H16Zm0 8h20v2H16Z" opacity=".7"/>
+    {% elif kind == "contact" %}
+      <path fill-rule="evenodd" d="M6 14h52v36H6Zm4 4v28h44V18Z"/>
+      <path d="M10 18h4v4h6v4h6v4h12v-4h6v-4h6v-4h4v8h-4v2h-6v4h-6v4H26v-4h-6v-4h-6v-2h-4Zm0 24h4v-4h6v-4h4v4h-4v4h-6v4h-4Zm30-8h4v4h6v4h4v4h-4v-4h-6v-4h-4Z" opacity=".7"/>
+    {% endif %}
+  </svg>
+{% endmacro %}

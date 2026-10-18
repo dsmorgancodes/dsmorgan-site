@@ -45,6 +45,9 @@
         <p>Written: {{ entry.written_date.strftime('%B %d, %Y') }}</p>
       {% endif %}
       <p><a href="{{ entry.link }}">View work</a></p>
+      {% if entry.explorer_url %}
+        <p><a href="{{ entry.explorer_url }}">Open explorer</a></p>
+      {% endif %}
       {% if entry.summary %}<p class="muted">{{ entry.summary }}</p>{% endif %}
       {% if entry.version_control_url %}
         <p><a href="{{ entry.version_control_url }}">Version Control</a></p>

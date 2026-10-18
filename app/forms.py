@@ -59,6 +59,11 @@ class EntryForm(FlaskForm):
         filters=[lambda value: value.strip() if value else value],
         validators=[DataRequired(), URL(), http_url],
     )
+    explorer_url = StringField(
+        "Interactive explorer URL (optional)",
+        filters=[strip],
+        validators=[Optional(), URL(), http_url],
+    )
     version_control_url = StringField(
         "Version Control (optional)",
         filters=[lambda value: value.strip() if value else value],

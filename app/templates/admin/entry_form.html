@@ -7,7 +7,7 @@
   <h1>{{ "Edit" if entry else "Add" }} Entry</h1>
   <form method="post" class="editor-form">
     {{ form.hidden_tag() }}
-    {% for field in [form.title, form.entry_type, form.written_date, form.link, form.version_control_url, form.summary] %}
+    {% for field in [form.title, form.entry_type, form.written_date, form.link, form.explorer_url, form.version_control_url, form.summary] %}
       <div class="form-field">
         {{ field.label }}
         {{ field(aria_invalid="true" if field.errors else "false") }}
@@ -19,6 +19,7 @@
     <p class="help-text">Written date describes the original work, not this catalog entry.
       Leave it blank if the exact date is unknown.</p>
     <p class="help-text">Version Control links to the repository containing the code.</p>
+    <p class="help-text">Interactive explorer links to an optional graphical demonstration accompanying the paper or project.</p>
     <p class="help-text">Summary is a one- or two-sentence abstract shown on the catalog card (600 characters max).</p>
     <p>{{ form.published() }} {{ form.published.label }}</p>
     <p class="help-text">Unpublished entries remain drafts and are hidden from the homepage.</p>

@@ -1,11 +1,16 @@
 {% extends "base.html" %}
-{% from "macros.html" import page_head %}
+{% from "macros.html" import page_head, header_art %}
 {% block content %}
-  <section class="contact" aria-labelledby="page-heading">
-    {{ page_head("Correspondence") }}
-    <p class="prose drop-cap">For research, collaboration, or professional inquiries, email is
+  <section class="contact accent-page" aria-labelledby="page-heading">
+    {% set intro %}For research, collaboration, or professional inquiries, email is
       the most reliable way to reach me. To receive the full curriculum vitae,
-      please use the <a href="{{ url_for('pages.cv') }}#request">request form</a>.</p>
+      please use the <a href="{{ url_for('pages.cv') }}#request">request form</a>.{% endset %}
+    <div class="page-intro">
+      <div class="study-intro-layout">
+        {{ page_head("Correspondence", intro) }}
+        {{ header_art("contact") }}
+      </div>
+    </div>
     <p class="address"><a href="mailto:drew@dsmorgan.com">drew@dsmorgan.com</a></p>
     <nav class="toolbar toolbar-centered small-caps" aria-label="Profiles and links">
       <a href="https://github.com/dsmorgancodes">GitHub</a>

@@ -22,6 +22,7 @@ class PortfolioEntry(db.Model):
     entry_type: Mapped[str] = mapped_column(String(20), nullable=False)
     written_date: Mapped[date | None] = mapped_column(nullable=True)
     link: Mapped[str] = mapped_column(Text, nullable=False)
+    explorer_url: Mapped[str | None] = mapped_column(Text, nullable=True)
     version_control_url: Mapped[str | None] = mapped_column(Text, nullable=True)
     summary: Mapped[str | None] = mapped_column(Text, nullable=True)
     published: Mapped[bool] = mapped_column(default=False, nullable=False)

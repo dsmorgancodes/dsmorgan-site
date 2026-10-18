@@ -2,7 +2,9 @@
 {% from "macros.html" import page_head %}
 {% block head %}
   {% if site_key %}
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+            async
+            defer></script>
   {% endif %}
 {% endblock %}
 {% macro field(f, wide=False) %}
@@ -14,33 +16,81 @@
     {% endfor %}
   </div>
 {% endmacro %}
+{% macro section_symbol(name) %}
+  <svg class="resume-symbol"
+       viewBox="0 0 32 32"
+       width="28"
+       height="28"
+       aria-hidden="true"
+       focusable="false"
+       fill="none"
+       stroke="currentColor"
+       stroke-width="2"
+       stroke-linecap="square"
+       stroke-linejoin="miter"
+       shape-rendering="crispEdges">
+    {% if name == "education" %}
+      <path d="M14 5h4v2h4v2h4v2h4v2h-4v2h-4v2h-4v2h-4v-2h-4v-2H6v-2H2v-2h4V9h4V7h4ZM8 18v6h4v2h8v-2h4v-6m6-5v13" />
+    {% elif name == "positions" %}
+      <path d="M4 10h24v16H4ZM10 10V6h12v4M4 16h6v2h12v-2h6M14 18v4h4v-4" />
+    {% elif name == "skills" %}
+      <path d="M10 8v4H6v8h4v4M22 8v4h4v8h-4v4M18 4v8h-2v8h-2v8" />
+    {% endif %}
+  </svg>
+{% endmacro %}
 {% block content %}
-  <section aria-labelledby="page-heading">
-    {{ page_head("Resume") }}
+  <section class="accent-page" aria-labelledby="page-heading">
+    <div class="page-intro">
+      <div class="study-intro-layout">
+        {{ page_head('Resume', 'My work connects mathematics, data analysis, and practical systems: turning information into insight and building tools that people can rely on. Below are my education, professional experience, and the technologies I work with. A full CV is available on request.') }}
+        <svg class="study-art"
+             viewBox="0 0 64 64"
+             width="128"
+             height="128"
+             aria-hidden="true"
+             focusable="false"
+             fill="url(#resume-art-fade)"
+             shape-rendering="crispEdges">
+          <defs>
+          <linearGradient id="resume-art-fade" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="currentColor" />
+          <stop offset=".45" stop-color="currentColor" stop-opacity=".8" />
+          <stop offset="1" stop-color="currentColor" stop-opacity=".1" />
+          </linearGradient>
+          </defs>
+          <path fill-rule="evenodd" d="M12 4h28v4h4v4h4v4h4v44H12ZM16 8v48h32V20H36V8Zm24 4v4h4Z" />
+          <path d="M22 16h8v8h-8ZM20 28h12v4H20Zm0 10h24v2H20Zm0 6h24v2H20Zm0 6h16v2H20Z" opacity=".7" />
+        </svg>
+      </div>
+    </div>
     <div class="ledger">
-      <h2 class="ledger-heading">Education</h2>
+      <h2 class="ledger-heading">{{ section_symbol("education") }}<span>Education</span></h2>
       <div>
-        <div class="ledger-entry">
-          <h3>M.S. in Mathematics</h3>
-          <p>Northwest Missouri State University</p>
+        <div class="ledger-entry education-row">
+          <div>
+            <h3>M.S. in Mathematics</h3>
+            <p>Northwest Missouri State University</p>
+            <p class="education-years">2024–2026</p>
+          </div>
+          <span class="gpa-badge">GPA <strong>4.00</strong></span>
         </div>
-        <div class="ledger-entry">
-          <h3>B.S. in Mathematics</h3>
-          <p>Olivet Nazarene University</p>
+        <div class="ledger-entry education-row">
+          <div>
+            <h3>B.S. in Mathematics</h3>
+            <p>Olivet Nazarene University</p>
+            <p class="education-years">2017–2021</p>
+          </div>
+          <span class="gpa-badge">GPA <strong>3.74</strong></span>
         </div>
       </div>
     </div>
     <div class="ledger">
-      <h2 class="ledger-heading">Positions</h2>
+      <h2 class="ledger-heading">{{ section_symbol("positions") }}<span>Positions</span></h2>
       <div>
         <div class="ledger-entry">
           <h3>Data &amp; Systems Analyst</h3>
           <p>Home Mortgage Specialists, Inc.</p>
-          <p class="help-text">
-
-              Turning our date into clear insights, while making sure all company software runs smoothly for our end users. 
-
-            </p>
+          <p class="help-text">Turning our data into clear insights, while making sure all company software runs smoothly for our end users.</p>
         </div>
         <div class="ledger-entry">
           <h3>Owner, Consultant</h3>
@@ -49,25 +99,62 @@
         </div>
       </div>
     </div>
-  </section>
-  <section>
+    <div class="ledger">
+      <h2 class="ledger-heading">{{ section_symbol("skills") }}<span>Skills</span></h2>
       <div>
-        <h3 class="skills-heading">Skills</h3>
-        <div class="skills-entry">
-         <table>
-          <thead>
-          
-          </thead>
-         </table> 
+        <div class="ledger-entry">
+          <h3>Languages</h3>
+          <ul class="skill-tags" aria-label="Programming languages">
+            <li>Python</li>
+            <li>SQL</li>
+            <li>C#</li>
+            <li>C++</li>
+            <li>JavaScript</li>
+            <li>TypeScript</li>
+            <li>LaTeX</li>
+          </ul>
+        </div>
+        <div class="ledger-entry">
+          <h3>Editors</h3>
+          <p class="help-text">An adaptable programmer, comfortable in many environments. The best tool for the job, in my humble opinion, is Neovim running my own <a href="https://github.com/dsmorgancodes/neovim-config/">custom config</a>. I also enjoy VS Code: a GUI is nice, but a TUI is better.</p>
+        </div>
+        <div class="ledger-entry">
+          <h3>Cloud</h3>
+          <p class="help-text">Most familiar with Azure and Google Cloud from ETL work for the banks and mortgage companies I serve. I have also worked with AWS.</p>
+        </div>
+        <div class="ledger-entry">
+          <h3>Databases</h3>
+          <p class="help-text">The best database is Postgres. If you disagree, try a service like Neon: the free tier is generous, the service is lightning fast, and the paid tier is even better.</p>
+        </div>
+        <div class="ledger-entry">
+          <h3>Version Control</h3>
+          <p class="help-text">Github is the name in the game. If something better was out there I'd use it. But Github has served me in every single environment I have ever worked in. A good note though, if you're looking to spend less on Github Actions, use <a href="https://www.blacksmith.sh/">Blacksmith</a>.</p>
+        </div>
+        <div class="ledger-entry">
+          <h3>Micro-Services</h3>
+          <ul class="skill-tags" aria-label="Micro-services">
+            <li>Stripe - For Payments</li>
+            <li>Resend, Twillio - For Email/Text</li>
+            <li>Neon - For SQL Database</li>
+            <li>Docker - For Containerization</li>
+            <li>Cloudflare Turnstile - For Authenticated Form Submissions</li>
+          </ul>
         </div>
       </div>
+    </div>
   </section>
-
-  <section id="request" class="request-card" aria-labelledby="request-heading">
+  <section id="request"
+           class="request-card accent-page"
+           aria-labelledby="request-heading">
     <h2 id="request-heading">Request the Full CV</h2>
-    <p class="muted">The complete curriculum vitae is shared on request. Leave your details
-      and I will reply personally by email.</p>
-    <form method="post" action="{{ url_for('pages.cv') }}#request" class="request-form" novalidate>
+    <p class="muted">
+      The complete curriculum vitae is shared on request. Leave your details
+      and I will reply personally by email.
+    </p>
+    <form method="post"
+          action="{{ url_for('pages.cv') }}#request"
+          class="request-form"
+          novalidate>
       {{ form.hidden_tag() }}
       <div class="form-grid">
         {{ field(form.name, autocomplete="name", required=True) }}
@@ -83,7 +170,10 @@
         {{ form.website(tabindex="-1", autocomplete="off") }}
       </div>
       {% if site_key %}
-        <div class="cf-turnstile" data-sitekey="{{ site_key }}" data-theme="auto" data-size="flexible"></div>
+        <div class="cf-turnstile"
+             data-sitekey="{{ site_key }}"
+             data-theme="auto"
+             data-size="flexible"></div>
       {% endif %}
       <p class="help-text">Your details are used only to respond to this request.</p>
       <p>{{ form.submit() }}</p>

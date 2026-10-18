@@ -183,4 +183,8 @@ use Cloud Run's revision traffic controls if a rollback is needed.
 Schema migrations still need to run before pushing code that requires them.
 
 Tests use an isolated in-memory SQLite database, not Neon. Model changes
-still require reviewed Alembic migrations; this editor adds no schema changes.
+still require reviewed Alembic migrations. The optional interactive explorer URL
+requires migration `c8f3a2d5e6b1`; run `uv run flask --app app db upgrade` before
+deploying this change. In the entry editor, keep the paper or project URL in the
+main link field and add its graphical demonstration in **Interactive explorer URL
+(optional)**. Published entries show a separate **Open explorer** link when provided.

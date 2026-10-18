@@ -8,17 +8,64 @@
   ("Real Analysis", "Limits, continuity, convergence, and the rigorous foundations of calculus. Studying how precise definitions and proofs explain the behavior of functions, sequences, and the methods used in mathematical modeling."),
   ("Graph Theory", "Networks, connectivity, paths, and combinatorial structures. Exploring how relationships can be modeled and analyzed, from algorithmic problems to network data and graph-based machine learning."),
   ("Topology", "Continuity, connectedness, compactness, and the structure of spaces. Investigating properties preserved under continuous transformations, with an interest in how shape and structure inform the analysis of data."),
+  ("Abstract Algebra", "Rings, fields, and the structures behind arithmetic and polynomial equations. Exploring how algebraic rules generalize familiar number systems, with connections to coding theory, cryptography, and computation."),
 ] %}
+{% macro study_symbol(name) %}
+  <svg class="study-symbol" viewBox="0 0 32 32" width="28" height="28"
+       aria-hidden="true" focusable="false" fill="none" stroke="currentColor"
+       stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" shape-rendering="crispEdges">
+    {% if name == "Artificial Intelligence" %}
+      <path d="M8 7h4v9h2M8 25h4v-9M18 16h4V7h2m-2 9v9h2"/>
+      <rect x="4" y="5" width="4" height="4"/>
+      <rect x="4" y="23" width="4" height="4"/>
+      <rect x="14" y="14" width="4" height="4"/>
+      <rect x="24" y="5" width="4" height="4"/>
+      <rect x="24" y="23" width="4" height="4"/>
+    {% elif name == "Group Theory" %}
+      <path d="M12 9h8v3h4v8h-4v3h-8v-3H8v-8h4ZM16 9v14M8 16h16M4 8V5h4V3h16v2h4v4m-4-2h4V3"/>
+    {% elif name == "Data Science" %}
+      <path d="M4 28h24M6 24v-6h4v6m4 0V14h4v10m4 0V8h4v16M4 12h4V8h6V4h6v2h4V4h4"/>
+    {% elif name == "Linear Algebra" %}
+      <path d="M4 4v24h24M8 24h4v-4h4v-4h4v-4h4V8m-6 0h6v6M8 24V10M5 13v-3h6v3"/>
+    {% elif name == "Real Analysis" %}
+      <path d="M4 4v24h24M8 24h2v-4h2v-8h2V8h4v4h2v6h2v2h4v-4h2"/>
+    {% elif name == "Graph Theory" %}
+      <path d="M8 8h8V6h6M6 10v8h8v6m4 2h8v-8M8 8v6h16M24 8v6"/>
+      <rect x="4" y="6" width="4" height="4"/>
+      <rect x="22" y="4" width="4" height="4"/>
+      <rect x="24" y="14" width="4" height="4"/>
+      <rect x="14" y="24" width="4" height="4"/>
+    {% elif name == "Topology" %}
+      <path d="M10 6h12v2h4v4h2v8h-2v4h-4v2H10v-2H6v-4H4v-8h2V8h4ZM12 12h8v2h2v4h-2v2h-8v-2h-2v-4h2ZM4 16h2v4h4v2h12v-2h4v-4h2"/>
+    {% elif name == "Abstract Algebra" %}
+      <path d="M6 6h20v20H6ZM6 13h20M13 6v20m4-16h5m-3 7v5m-2-3h5"/>
+    {% endif %}
+  </svg>
+{% endmacro %}
 {% block content %}
-  <section aria-labelledby="page-heading">
-    {{ page_head("Areas of Study") }}
-    <p class="prose drop-cap">My graduate disciplines sit where pure mathematics meets modern
-      computation: the structures of algebra and analysis, and the methods that turn
-      data into understanding.</p>
+  <section class="accent-page" aria-labelledby="page-heading">
+    <div class="page-intro">
+      <div class="study-intro-layout">
+        {{ page_head("Areas of Study", "My graduate disciplines sit where pure mathematics meets modern computation: the structures of algebra and analysis, and the methods that turn data into understanding.") }}
+        <svg class="study-art" viewBox="0 0 64 64" width="128" height="128"
+             aria-hidden="true" focusable="false" fill="url(#study-cap-fade)" shape-rendering="crispEdges">
+          <defs>
+            <linearGradient id="study-cap-fade" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="currentColor"/>
+              <stop offset=".45" stop-color="currentColor" stop-opacity=".8"/>
+              <stop offset="1" stop-color="currentColor" stop-opacity=".1"/>
+            </linearGradient>
+          </defs>
+          <path d="M30 8h4v2h4v2h4v2h4v2h4v2h4v2h4v2h4v2h-4v2h-4v2h-4v2h-4v2h-4v2h-4v2h-4v2h-4v-2h-4v-2h-4v-2h-4v-2h-4v-2h-4v-2H2v-2h4v-2h4v-2h4v-2h4v-2h4v-2h4v-2h4Z"/>
+          <path d="M14 32h4v2h4v2h4v2h12v-2h4v-2h4v-2h4v13h-2v2h-4v2h-6v2H26v-2h-6v-2h-4v-2h-2Z" opacity=".65"/>
+          <path d="M32 20h4v2h8v2h8v2h6v22h2v4h2v8H52v-8h2v-4h2V28h-6v-2h-8v-2h-8v-2h-2Z"/>
+        </svg>
+      </div>
+    </div>
     <dl class="glossary">
       {% for name, text in disciplines %}
         <div>
-          <dt>{{ name }}</dt>
+          <dt class="study-heading">{{ study_symbol(name) }}<span>{{ name }}</span></dt>
           <dd>{{ text }}</dd>
         </div>
       {% endfor %}

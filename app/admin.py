@@ -93,6 +93,7 @@ def create_entry():
     if form.validate_on_submit():
         entry = PortfolioEntry()
         form.populate_obj(entry)
+        entry.explorer_url = entry.explorer_url or None
         entry.version_control_url = entry.version_control_url or None
         db.session.add(entry)
         if commit_catalog_change():
@@ -109,6 +110,7 @@ def edit_entry(entry_id):
     form = EntryForm(obj=entry)
     if form.validate_on_submit():
         form.populate_obj(entry)
+        entry.explorer_url = entry.explorer_url or None
         entry.version_control_url = entry.version_control_url or None
         if commit_catalog_change():
             flash("Entry updated.", "success")
